@@ -20,6 +20,10 @@ getSimpleDataTypeCaster = (typeClass) ->
 
 getClassTypeCaster = (typeClass) ->
   (value) ->
+
+    if value && value.constructor is typeClass
+      return value
+
     return new typeClass value
 
 ###
@@ -67,7 +71,6 @@ module.exports = transformer = (options = {}) ->
     else
       options.parent.async value, onParentResult
 
-
   ###
   ###
 
@@ -83,7 +86,6 @@ module.exports = transformer = (options = {}) ->
   ###
   ###
 
-
   self.cast = (typeClass) ->
     transformer 
       parent: self
@@ -92,7 +94,7 @@ module.exports = transformer = (options = {}) ->
   ###
   ###
 
-  self.map = (fn) ->
+  self.map = (fn, test) ->
     transformer
       parent: self
       async: fn.length > 1
