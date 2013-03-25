@@ -55,4 +55,10 @@ describe("sync", function() {
     var result = caster(caster({ name: "craig" }));
     expect(result.data).not.to.be.an(Person);
   });
+
+  it("can pass a second param", function() {
+    hoist.map(function(item, index) {
+      expect(index).to.be(6);
+    }).call(null, 5, 6);  
+  })
 })

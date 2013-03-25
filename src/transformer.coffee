@@ -53,10 +53,10 @@ module.exports = transformer = (options = {}) ->
   
   self = (value, next) ->
 
-    if arguments.length is 1
-      return options.root.sync value
-    else
+    if arguments.length > 1 and isa.function arguments[arguments.length - 1]
       return options.root.async value, next
+    else
+      return options.root.sync.apply null, arguments
 
 
   if not options.root
@@ -86,14 +86,15 @@ module.exports = transformer = (options = {}) ->
   ###
   ###
 
-  self.sync = (value, next) ->
-    if options.async
-      throw new Error "cannot type-cast value synchronously with asynchronous transformer"
+  self.sync = (value) ->
 
-    value = options.transform value
+    #if options.async
+    #  throw new Error "cannot type-cast value synchronously with asynchronous transformer"
+
+    arguments[0] = options.transform.apply null, arguments
 
     if options.next
-      value = options.next.sync value
+      value = options.next.sync.apply null, arguments
 
     value
 
