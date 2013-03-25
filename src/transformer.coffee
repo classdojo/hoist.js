@@ -39,15 +39,28 @@ getTypeCaster = (typeClass) ->
 
 module.exports = transformer = (options = {}) ->
 
+
+  
+  ###
+  ###
+
   if not options.transform
     options.transform = (value) ->
       value
+
+  ###
+  ###
   
   self = (value, next) ->
+
     if arguments.length is 1
-      self.sync value
+      return options.root.sync value
     else
-      self.async value, next
+      return options.root.async value, next
+
+
+  if not options.root
+    options.root = self
 
   ###
   ###
@@ -59,17 +72,16 @@ module.exports = transformer = (options = {}) ->
 
   self.async = (value, next) ->
 
-    onParentResult = (err, result) ->
+    onResult = (err, result) ->
       return next(err) if err
-      if options.async
-        options.transform result, next
-      else
-        next null, options.transform result
+      return next(null, result) if not options.next
+      options.next.async result, next
 
-    if not options.parent
-      onParentResult null, value
+
+    if options.async
+      options.transform value, onResult
     else
-      options.parent.async value, onParentResult
+      onResult null, options.transform value
 
   ###
   ###
@@ -78,25 +90,28 @@ module.exports = transformer = (options = {}) ->
     if options.async
       throw new Error "cannot type-cast value synchronously with asynchronous transformer"
 
-    if options.parent
-      value = options.parent.sync value
+    value = options.transform value
 
-    options.transform value
+    if options.next
+      value = options.next.sync value
+
+    value
 
   ###
   ###
 
   self.cast = (typeClass) ->
-    transformer 
-      parent: self
+    options.next = transformer 
+      root: options.root
       transform: getTypeCaster typeClass
 
   ###
   ###
 
   self.map = (fn, test) ->
-    transformer
+    options.next = transformer
       parent: self
+      root: options.root
       async: fn.length > 1
       transform: fn
 

@@ -13,6 +13,7 @@ describe("sync", function() {
     }
   });
 
+
   it("can create a few casters", function() {
     numberCaster = hoist.cast(Number);
     arrayCaster = hoist.cast(Array);
@@ -21,9 +22,11 @@ describe("sync", function() {
     });
   });
 
+
   it("can properly type cast a number", function() {
     expect(hoist.cast(Number)("5")).to.be(5);
-  })
+  });
+  
   it("can properly type cast an array", function() {
     var result = hoist.cast(Array)("5");
     expect(result).to.be.an(Array);
