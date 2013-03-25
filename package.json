@@ -1,0 +1,24 @@
+{
+  "name": "hoist",
+  "version": "0.0.0",
+  "description": "Synchronous mappings:",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/classdojo/hoist.js.git"
+  },
+  "author": "",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "02c4d43ea4361f6b1ea4610d78172a6ba9b7e2ac",
+  "dependencies": {
+    "isa": "0.1.x"
+  },
+  "devDependencies": {
+    "mocha": "1.8.x",
+    "expect.js": "0.2.x"
+  }
+}
