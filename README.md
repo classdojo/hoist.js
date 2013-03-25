@@ -1,6 +1,6 @@
 ### Hoist makes it easy to transform your objects.
 
-![Hoist Transformer](http://www.botchthecrab.com/archive/autobot/1985/hoist.jpg "Hoist")
+![Hoist Transformer](http://f.cl.ly/items/3N1k3r3V0D2R1v1u3u32/hoist.jpg "Hoist")
 
 
 Synchronous mappings:
