@@ -1,6 +1,6 @@
 {
   "name": "hoist",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Synchronous mappings:",
   "main": "./lib/index.js",
   "scripts": {

@@ -1,7 +1,9 @@
 transformer = require "./transformer"
 
-module.exports = 
-  cast: (typeClass) -> 
+module.exports = transformer
+
+module.exports.cast = (typeClass) -> 
     transformer().cast typeClass
-  map: (typeClass) ->
+    
+module.exports.map = (typeClass) ->
     transformer().map typeClass
