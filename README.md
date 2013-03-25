@@ -1,3 +1,8 @@
+### Hoist makes it easy to transform your objects.
+
+![Hoist Transformer](http://upload.wikimedia.org/wikipedia/en/1/16/Hoist-mw.jpg "Hoist")
+
+
 Synchronous mappings:
 
 ```javascript
