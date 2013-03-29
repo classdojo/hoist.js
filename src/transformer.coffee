@@ -1,4 +1,5 @@
 isa = require "isa"
+async = require "async"
 
 ###
 ###
@@ -34,19 +35,16 @@ getTypeCaster = (typeClass) ->
   return getSimpleDataTypeCaster(typeClass) if (typeClass is String) or (typeClass is Number)
   return getClassTypeCaster(typeClass)
 
+
+
+
+
 ###
 ###
 
-module.exports = transformer = (options = {}) ->
+module.exports = (options = {}) ->
 
-
-  
-  ###
-  ###
-
-  if not options.transform
-    options.transform = (value) ->
-      value
+  _transform = []
 
   ###
   ###
@@ -54,67 +52,57 @@ module.exports = transformer = (options = {}) ->
   self = (value, next) ->
 
     if arguments.length > 1 and isa.function arguments[arguments.length - 1]
-      return options.root.async value, next
+      return self.async value, next
     else
-      return options.root.sync.apply null, arguments
+      return self.sync.apply null, arguments
 
-
-  if not options.root
-    options.root = self
-
-  ###
-  ###
-
-  self.options = options
 
   ###
   ###
 
   self.async = (value, next) ->
 
-    onResult = (err, result) ->
+    async.eachSeries _transform, ((transformer, next) ->
+      if transformer.async
+        transformer.transform value, (err, result) ->
+          return next(err) if err
+          next null, value = result
+      else
+        value = transformer.transform value
+        next()
+    ), (err, result) ->
       return next(err) if err
-      return next(null, result) if not options.next
-      options.next.async result, next
+      next null, value
 
-
-    if options.async
-      options.transform value, onResult
-    else
-      onResult null, options.transform value
 
   ###
   ###
 
-  self.sync = (value) ->
+  self.sync = () ->
+    for transformer in _transform
+      arguments[0] = transformer.transform.apply null, arguments
 
-    #if options.async
-    #  throw new Error "cannot type-cast value synchronously with asynchronous transformer"
+    arguments[0]
 
-    arguments[0] = options.transform.apply null, arguments
-
-    if options.next
-      value = options.next.sync.apply null, arguments
-
-    value
 
   ###
   ###
 
   self.cast = (typeClass) ->
-    options.next = transformer 
-      root: options.root
+    _transform.push {
       transform: getTypeCaster typeClass
+    }
+    @
 
   ###
   ###
 
-  self.map = (fn, test) ->
-    options.next = transformer
-      parent: self
-      root: options.root
+  self.map = (fn) ->
+    _transform.push {
       async: fn.length > 1
       transform: fn
+    }
+    @
 
   self
 

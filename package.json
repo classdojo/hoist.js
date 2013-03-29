@@ -1,6 +1,6 @@
 {
   "name": "hoist",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Synchronous mappings:",
   "main": "./lib/index.js",
   "scripts": {
@@ -15,11 +15,12 @@
   "readmeFilename": "README.md",
   "gitHead": "02c4d43ea4361f6b1ea4610d78172a6ba9b7e2ac",
   "dependencies": {
-    "isa": "0.1.x"
+    "isa": "0.1.x",
+    "async": "0.2.x"
   },
   "devDependencies": {
     "mocha": "1.8.x",
     "expect.js": "0.2.x",
-    "structr":"0.2.x"
+    "structr": "0.2.x"
   }
 }
