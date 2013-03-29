@@ -2,8 +2,8 @@ transformer = require "./transformer"
 
 module.exports = transformer
 
-module.exports.cast = (typeClass) -> 
-    transformer().cast typeClass
-    
-module.exports.map = (typeClass) ->
-    transformer().map typeClass
+
+for method in ["cast", "map", "preCast", "preMap", "postCast", "postMap"] then do (method) =>
+  module.exports[method] = () -> 
+    t = transformer()
+    t[method].apply t, arguments

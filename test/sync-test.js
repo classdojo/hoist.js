@@ -50,6 +50,13 @@ describe("sync", function() {
     expect(result).to.be.an(Person);
   });
 
+
+  it("can pre-cast a person", function() {
+    var result = hoist.postCast(Person).preMap(function(value){ return { name: value }; })("craig");
+    expect(result).to.be.an(Person);
+    expect(result.data.name).to.be("craig");
+  })
+
   it("cannot re-cast a person", function() {
     var caster = hoist.cast(Person);
     var result = caster(caster({ name: "craig" }));

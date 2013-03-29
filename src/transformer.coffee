@@ -45,12 +45,13 @@ getTypeCaster = (typeClass) ->
 module.exports = (options = {}) ->
 
   _transform = []
+  _pre = []
+  _post = []
 
   ###
   ###
   
   self = (value, next) ->
-
     if arguments.length > 1 and isa.function arguments[arguments.length - 1]
       return self.async value, next
     else
@@ -84,24 +85,61 @@ module.exports = (options = {}) ->
 
     arguments[0]
 
+  ###
+  ###
+
+  self.preCast = (typeClass) -> self._push caster(typeClass), _pre
 
   ###
   ###
 
-  self.cast = (typeClass) ->
-    _transform.push {
+  self.postCast = (typeClass) -> self._push caster(typeClass), _post
+
+  ###
+  ###
+
+  self.cast = (typeClass) -> self.postCast typeClass
+
+  ###
+  ###
+
+  caster = (typeClass) ->
+    {
       transform: getTypeCaster typeClass
     }
-    @
 
   ###
   ###
 
-  self.map = (fn) ->
-    _transform.push {
-      async: fn.length > 1
+  self.preMap = (fn) -> self._push mapper(fn), _pre
+
+  ###
+  ###
+
+  self.postMap = (fn) -> self._push mapper(fn), _post
+
+
+  ###
+  ###
+
+  self.map = (fn) -> self.postMap fn
+
+  ###
+  ###
+
+  mapper = (fn) ->
+    {
+      async: fn.length > 1,
       transform: fn
     }
+
+
+  ###
+  ###
+
+  self._push = (obj, stack) ->
+    stack.push obj
+    _transform = _pre.concat(_post)
     @
 
   self
