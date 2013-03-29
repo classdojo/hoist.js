@@ -47,6 +47,7 @@ module.exports = (options = {}) ->
   _transform = []
   _pre = []
   _post = []
+  _mid = []
 
   ###
   ###
@@ -90,15 +91,17 @@ module.exports = (options = {}) ->
 
   self.preCast = (typeClass) -> self._push caster(typeClass), _pre
 
+
+  ###
+  ###
+
+  self.cast = (typeClass) -> self._push caster(typeClass), _mid
+
   ###
   ###
 
   self.postCast = (typeClass) -> self._push caster(typeClass), _post
 
-  ###
-  ###
-
-  self.cast = (typeClass) -> self.postCast typeClass
 
   ###
   ###
@@ -116,13 +119,13 @@ module.exports = (options = {}) ->
   ###
   ###
 
+  self.map = (fn) -> self._push mapper(fn), _mid
+
+  ###
+  ###
+
   self.postMap = (fn) -> self._push mapper(fn), _post
 
-
-  ###
-  ###
-
-  self.map = (fn) -> self.postMap fn
 
   ###
   ###
@@ -139,7 +142,7 @@ module.exports = (options = {}) ->
 
   self._push = (obj, stack) ->
     stack.push obj
-    _transform = _pre.concat(_post)
+    _transform = _pre.concat(_mid).concat(_post)
     @
 
   self
