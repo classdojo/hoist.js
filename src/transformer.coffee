@@ -1,4 +1,4 @@
-isa = require "isa"
+type  = require "type-component"
 async = require "async"
 
 ###
@@ -6,7 +6,7 @@ async = require "async"
 
 getArrayTypeCaster = () ->
   (value) ->
-    return value if isa.array value
+    return value if type(value) is "array"
     return [value]
 
 ###
@@ -53,7 +53,7 @@ module.exports = (options = {}) ->
   ###
   
   self = (value, next) ->
-    if arguments.length > 1 and isa.function arguments[arguments.length - 1]
+    if arguments.length > 1 and type(arguments[arguments.length - 1]) is "function"
       return self.async value, next
     else
       return self.sync.apply null, arguments
