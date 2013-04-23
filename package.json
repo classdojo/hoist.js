@@ -4,7 +4,7 @@
   "description": "Synchronous mappings:",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make clean all test-web; mocha ./test; karma start"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,8 @@
   "devDependencies": {
     "mocha": "1.8.x",
     "expect.js": "0.2.x",
-    "structr": "0.2.x"
+    "structr": "0.2.x",
+    "sardines": "0.4.x",
+    "karma": "0.8.x"
   }
 }
