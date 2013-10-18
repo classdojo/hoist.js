@@ -35,3 +35,4 @@ castNumValue("5", function(err, result) {
 
 castNumValue("5"); //error thrown for casting against asynchronous caster
 ```
+
