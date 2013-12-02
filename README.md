@@ -1,4 +1,4 @@
-### Hoist makes it easy to transform your objects.
+### Hoist makes it easy to transform your objects. [![Alt ci](https://travis-ci.org/classdojo/hoist.js.png)](https://travis-ci.org/classdojo/hoist.js)
 
 Synchronous mappings:
 
